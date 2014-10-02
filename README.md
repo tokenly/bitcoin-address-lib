@@ -1,1 +1,1 @@
-The BitcoinAddressLib component for UTipdMe.
+A simple bitcoin address helper library.
