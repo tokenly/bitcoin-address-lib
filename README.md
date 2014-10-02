@@ -1,0 +1,1 @@
+The BitcoinAddressLib component for UTipdMe.
