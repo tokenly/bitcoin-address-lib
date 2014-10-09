@@ -34,6 +34,18 @@ class BitcoinKeyUtils
         return $compressed_public_key;
     }
 
+    public static function addressFromWIF($wif) {
+        $is_valid = BitcoinLib::validate_WIF($wif);
+        if (!$is_valid) { throw new Exception("Invalid WIF", 1); }
+
+        $private_key_details = BitcoinLib::WIF_to_private_key($wif);
+        $private_key = $private_key_details['key'];
+
+        $address_version = '00';
+        $compressed_public_key = BitcoinLib::private_key_to_public_key($private_key, true);
+        return BitcoinLib::public_key_to_address($compressed_public_key, $address_version);
+    }
+
     ////////////////////////////////////////////////////////////////////////
 
 }
