@@ -1,5 +1,5 @@
 {
-    "name": "utipd/bitcoin-address-lib",
+    "name": "tokenly/bitcoin-address-lib",
     "description": "A bitcoin address helper library",
     "type": "library",
     "license": "MIT",
@@ -12,12 +12,13 @@
     ],
     "require": {
         "php": ">=5.4.0",
-        "bitwasp/bitcoin-lib": "dev-master"
+        "bitwasp/bitcoin-lib": "dev-master",
+        "mdanter/ecc": "dev-master"
     },
     "require-dev": {
         "phpunit/phpunit": "~4"
     },
     "autoload": {
-        "psr-0": {"Utipd\\BitcoinAddressLib": "src"}
+        "psr-0": {"Tokenly\\BitcoinAddressLib": "src"}
     }
 }

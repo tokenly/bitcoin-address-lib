@@ -1,6 +1,6 @@
 <?php
 
-namespace Utipd\BitcoinAddressLib;
+namespace Tokenly\BitcoinAddressLib;
 
 use BitWasp\BitcoinLib\BitcoinLib;
 use Exception;

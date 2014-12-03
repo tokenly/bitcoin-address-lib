@@ -1,6 +1,6 @@
 <?php
 
-namespace Utipd\BitcoinAddressLib;
+namespace Tokenly\BitcoinAddressLib;
 
 use BitWasp\BitcoinLib\BIP32;
 use BitWasp\BitcoinLib\BitcoinLib;
