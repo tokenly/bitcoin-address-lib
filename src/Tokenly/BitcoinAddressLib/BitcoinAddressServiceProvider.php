@@ -24,13 +24,25 @@ class BitcoinAddressServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->package('tokenly/bitcoin-address-lib', 'bitcoin-address-lib', __DIR__.'/../../');
+        $this->bindConfig();
 
         $this->app->bind('Tokenly\BitcoinAddressLib\BitcoinAddressGenerator', function($app) {
-            $config = $app['config']['bitcoin-address-lib::bitcoin'];
-            $generator = new BitcoinAddressGenerator($config['seed']);
+            $seed = Config::get('bitcoin-address-lib.seed');
+            if (!$seed) { throw new Exception("A seed value is required for the bitcoin address generator", 1); }
+            $generator = new BitcoinAddressGenerator($seed);
             return $generator;
         });
+    }
+
+    protected function bindConfig()
+    {
+        // simple config
+        $config = [
+            'bitcoin-address-lib.seed' => env('BITCOIN_MASTER_KEY'),
+        ];
+
+        // set the laravel config
+        Config::set($config);
     }
 
 }
