@@ -4,6 +4,7 @@ namespace Tokenly\BitcoinAddressLib;
 
 
 use Exception;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use Tokenly\BitcoinAddressLib\BitcoinAddressGenerator;
 
