@@ -2,8 +2,8 @@
 
 namespace Tokenly\BitcoinAddressLib;
 
-use BitWasp\BitcoinLib\BIP32;
-use BitWasp\BitcoinLib\BitcoinLib;
+use BitWasp\Bitcoin\Key\Deterministic\HierarchicalKeyFactory;
+use BitWasp\Buffertools\Buffer;
 use Exception;
 
 /*
@@ -22,27 +22,23 @@ class BitcoinAddressGenerator
     }
 
     public function publicAddress($token, $identifier=0) {
-        $private_key = $this->privateKey($token, $identifier);
-        return BIP32::key_to_address($private_key);
+        $master_key = $this->newMasterKey($this->deriveMasterSeed($token));
+        $child_extended_key = $master_key->deriveChild($identifier);
+        return $child_extended_key->getPublicKey()->getAddress()->getAddress();
     }
 
     public function privateKey($token, $identifier=0) {
         $master_key = $this->newMasterKey($this->deriveMasterSeed($token));
-        $key = BIP32::build_key($master_key[0], $identifier);
-        return $key[0];
+        $child_extended_key = $master_key->deriveChild($identifier);
+        return $child_extended_key->getPrivateKey();
     }
 
     public function WIFPrivateKey($token, $identifier=0) {
-        $master_key = $this->newMasterKey($this->deriveMasterSeed($token));
-        $key = BIP32::build_key($master_key[0], $identifier);
-        $key_details = BIP32::import($key[0]);
-        $wif = BitcoinLib::private_key_to_WIF($key_details['key'], true, $key_details['version']);
-        if (!BitcoinLib::validate_WIF($wif)) { throw new Exception("Failed to validate WIF", 1); }
-        return $wif;
+        return $this->privateKey($token, $identifier)->toWif();
     }
 
-    public function newMasterKey($seed) {
-        return BIP32::master_key($seed);
+    public function newMasterKey($seed_hex_string) {
+        return HierarchicalKeyFactory::fromEntropy(new Buffer(hex2bin($seed_hex_string)));
     }
 
     ////////////////////////////////////////////////////////////////////////
